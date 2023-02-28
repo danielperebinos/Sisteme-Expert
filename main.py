@@ -1,11 +1,12 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
+from typing import List
+
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pyswip import Prolog
 
 prolog = Prolog()
-# print(prolog.assertz("father(michael,john)"))
 prolog.consult('knowledge.pl')
 
 app = FastAPI()
@@ -36,10 +37,39 @@ async def animal_tips(animal: str):
     return JSONResponse({'message': 'ok', 'animal': animal, 'tips': tips})
 
 
-@app.get('animals/{animal}/diseases')
+@app.get('/animals/{animal}/diseases')
 async def animal_diseases(animal: str):
-    diseases = [disease['Disease'] for disease in list(prolog.query(f'disease({animal}, Disease'))]
+    diseases = list(prolog.query(f'disease({animal}, Disease, Description)'))
     return JSONResponse({'message': 'ok', 'animal': animal, 'diseases': diseases})
+
+
+@app.get('/animals/{animal}/{disease}/simptoms')
+async def animal_diseases_simptoms(animal: str, disease: str):
+    simptoms = [simptom['Simptom'] for simptom in list(prolog.query(f'simptom({animal}, {disease}, Simptom)'))]
+    return JSONResponse({'message': 'ok', 'animal': animal, 'simptoms': simptoms})
+
+
+@app.post('/animals/{animal}/')
+async def diseases_by_simptoms(animal: str, simptoms: List[str]):
+    diseases = []
+    score = {}
+    diseases_simptoms = {}
+
+    for simptom in simptoms:
+        diseases_from_simptom = [disease['Disease'] for disease in
+                                 list(prolog.query(f"simptom({animal}, Disease, '{simptom}')."))]
+        for disease in diseases_from_simptom:
+            diseases_simptoms[disease] = [simptom] if diseases_simptoms.get(disease, None) is None else \
+                diseases_simptoms[disease] + [simptom]
+
+        diseases += diseases_from_simptom
+
+    for disease in diseases:
+        score[disease] = diseases.count(disease)
+
+    return JSONResponse(
+        {'message': 'ok', 'animal': animal, 'diseases_simptoms': diseases_simptoms, 'diseases': list(set(diseases)),
+         'score': score})
 
 
 if __name__ == '__main__':
