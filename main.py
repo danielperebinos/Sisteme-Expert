@@ -21,8 +21,8 @@ app.add_middleware(
 
 
 @app.get('/')
-def home():
-    return JSONResponse({'message': 'Hello World'})
+def version():
+    return JSONResponse({'message': 'ok', 'version': '0.01'})
 
 
 @app.get('/animals')
@@ -37,20 +37,32 @@ async def animal_tips(animal: str):
     return JSONResponse({'message': 'ok', 'animal': animal, 'tips': tips})
 
 
+@app.get('/animals/{animal}/equipments')
+async def animal_equipments(animal: str):
+    equipments = [equipment['Equipment'] for equipment in list(prolog.query(f'equipment({animal}, Equipment)'))]
+    return JSONResponse({'message': 'ok', 'animal': animal, 'equipments': equipments})
+
+
 @app.get('/animals/{animal}/diseases')
 async def animal_diseases(animal: str):
     diseases = list(prolog.query(f'disease({animal}, Disease, Description)'))
     return JSONResponse({'message': 'ok', 'animal': animal, 'diseases': diseases})
 
 
-@app.get('/animals/{animal}/{disease}/simptoms')
-async def animal_diseases_simptoms(animal: str, disease: str):
-    simptoms = [simptom['Simptom'] for simptom in list(prolog.query(f'simptom({animal}, {disease}, Simptom)'))]
+@app.get('/animals/{animal}/simptoms')
+async def animal_simptoms(animal: str):
+    simptoms = [simptom['Simptom'] for simptom in list(prolog.query(f'simptom({animal}, Disease, Simptom)'))]
     return JSONResponse({'message': 'ok', 'animal': animal, 'simptoms': simptoms})
 
 
-@app.post('/animals/{animal}/')
-async def diseases_by_simptoms(animal: str, simptoms: List[str]):
+@app.get('/animals/{animal}/{disease}/simptoms')
+async def animal_simptoms_by_simptoms(animal: str, disease: str):
+    simptoms = [simptom['Simptom'] for simptom in list(prolog.query(f"simptom({animal}, '{disease}', Simptom)"))]
+    return JSONResponse({'message': 'ok', 'animal': animal, 'simptoms': simptoms})
+
+
+@app.post('/animals/')
+async def animal_diseases_by_simptoms(animal: str, simptoms: List[str]):
     diseases = []
     score = {}
     diseases_simptoms = {}
