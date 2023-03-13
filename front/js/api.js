@@ -35,11 +35,12 @@ async function get_simptoms(animal){
     return [];
 }
 
-async function get_simptoms(animal){
-    let reponse = await fetch(SIMPTOMS_URL(animal));
+async function get_diseases(animal){
+    let reponse = await fetch(DISEASES_URL(animal));
+
     if (reponse.status == 200){
         let json = await reponse.json();
-        return json.simptoms;
+        return json;
     }
     return [];
 }
@@ -49,6 +50,32 @@ async function get_disease_simptoms(animal, disease){
     if (reponse.status == 200){
         let json = await reponse.json();
         return json.simptoms;
+    }
+    return [];
+}
+
+async function get_diseases_by_simptoms(animal, simptoms){
+    let data = {
+        "animal": animal,
+        "simptoms": simptoms,
+    };
+
+    let reponse = await fetch(ANIMALS_URL(), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        "animal": animal,
+        "simptoms": simptoms,
+    }),
+    });
+    
+    if (reponse.status == 200){
+        let json = await reponse.json();
+        return json;
+    }
+    else{
     }
     return [];
 }

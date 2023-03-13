@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Custom JS-->
+    <script src="js/paths.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/draw.js"></script>
+
+</head>
+
+<body class="" style="background-image: url('images/sadcat.jpg'); background-size:cover;">
+
+    <header class="topbar">
+        <div class="container-fluid">
+            <nav class="row navbar navbar-expand-lg navbar-light row">
+
+                <div class="navbar-brand col-3">
+                    <div class="navbar-item">
+                        <a href="home.html">
+                            <img src="images/clogo.png" alt="" style="height: 50px;">
+                            <span style="color:white">Help your pet</span>
+                        </a>
+                    </div>
+                </div>
+
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+
+                <div class="collapse navbar-collapse col-9" id="navbarNav">
+                    <ul class="navbar-nav justify-content-around col-10">
+                        <li class="nav-item"><a class="nav-link text-white" href="tips.html"> General Tips </a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="simptoms.html"> Simptoms </a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="diseases.html"> Diseases </a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container-fluid p-0 bg-light" style="min-height: calc(100vh - 64px); width: 50%;">
+        <div class="form-container">
+            <form name=form action="javascript:;">
+                <div class="form-group mb-4">
+                    <label for="animals">Select your pet:</label>
+                    <select class="form-control" aria-label="Select animal" id="animals" name="animal">
+                    </select>
+                </div>
+                <button onclick="drawAnimalDiseases();">Submit</button>
+            </form>
+
+            <div id="diseases">
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"></script>
+
+</body>
+
+</html>
